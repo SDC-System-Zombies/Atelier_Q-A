@@ -1,1 +1,0 @@
-// queries made to the db goes here
