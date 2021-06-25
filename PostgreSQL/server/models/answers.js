@@ -3,15 +3,17 @@ const db = require('../db');
 module.exports = {
   getAnswers: ({question_id, page, count}) => {
     return db.query(
-    `SELECT body, date_written, asker_name, reported, helpful
-    FROM questions
-    WHERE product_id = ${product_id}
+    `SELECT body, date, name, reported, helpful
+    FROM answers
+    WHERE question_id = ${question_id}
     LIMIT ${count}`)
+    //need to filter all the reported ones
     .then((data) => {
       return data.rows;
     })
     .catch((err) => {
-      return err;
+      console.log(err);
+      return 400;
     });
   },
   postAnswer: () => {

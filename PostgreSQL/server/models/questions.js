@@ -7,6 +7,7 @@ module.exports = {
     FROM questions
     WHERE product_id = ${product_id}
     LIMIT ${count}`)
+    //need to filter all the reported ones
     .then((data) => {
       return data.rows;
     })

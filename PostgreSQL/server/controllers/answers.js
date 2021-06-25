@@ -1,10 +1,14 @@
 const models = require('../models');
 
 module.exports = {
-  get: (req, res) => {
-    let params = req.params;
-    console.log(params);
-    res.send(200)
+  get: async (req, res) => {
+    let params = {
+      question_id: req.params.question_id,
+      page: req.query.page,
+      count: req.query.count
+    };
+    let data = await models.answers.getAnswers(params);
+    res.send(data);
   },
   post: (req, res) => {
 

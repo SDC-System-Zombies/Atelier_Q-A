@@ -12,15 +12,6 @@ module.exports = {
     } else {
       res.sendStatus(400);
     }
-
-  /*
-    GET
-    /qa/questions
-      Parameters
-      product_id	integer	Specifies the product for which to retrieve questions.
-      page      	integer	Selects the page of results to return. Default 1.
-      count     	integer	Specifies how many results per page to return. Default 5.
-  */
   },
   post: async (req, res) => {
     let date = new Date().toJSON().slice(0,10);
@@ -37,35 +28,16 @@ module.exports = {
     } else {
       res.sendStatus(400);
     }
-  /*
-  POST - Adds a question to the product
-  /qa/questions
-    Body Parameters
-    body      	text   	Text of question being asked
-    name      	text   	Username for question asker
-    email     	text   	Email address for question asker
-    product_id	integer	Required ID of the Product for which the question is posted
-    */
   },
   putHelpful: async (req, res) => {
     let params = { question_id: req.params.question_id }
     let data = await model.questions.updateHelpful(params);
-    res.sendStatus(data)
-  /*
-    PUT
-    /qa/questions/:question_id/helpful
-    question_id	integer 	Required ID of the question to update
-*/
+    res.sendStatus(data);
   },
   putReport: async (req, res) => {
     let params = { question_id: req.params.question_id }
     let data = await model.questions.reportQuestion(params);
-    res.sendStatus(data)
-      /*
-    PUT
-    /qa/questions/:question_id/report
-    question_id	integer 	Required ID of the question to update
-*/
+    res.sendStatus(data);
   }
 };
 
