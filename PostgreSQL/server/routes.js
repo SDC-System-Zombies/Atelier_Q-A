@@ -1,10 +1,17 @@
 const router = require('express').Router();
 const controller = require('./controllers');
 
-router.get('/questions', (req, res) => {
-  res.send('Received a GET request for questions');
-  console.log(req.params);
-})
+// Questions Routes
+router.get('/questions', controller.questions.get);
+router.post('/questions', controller.questions.post);
+router.put('/questions/:question_id/helpful', controller.questions.putHelpful);
+router.put('/questions/:question_id/report', controller.questions.putReport);
+
+// Answer Routes
+router.get('/answers', controller.answers.get);
+router.post('/answers', controller.answers.post);
+router.put('/answers/:answer_id/helpful', controller.answers.putHelpful);
+router.get('/answers/:answer_id/report', controller.answers.putReport);
 
 /*
   GET
