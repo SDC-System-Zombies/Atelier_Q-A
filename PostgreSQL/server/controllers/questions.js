@@ -6,12 +6,19 @@ module.exports = {
       product_id: req.query.product_id,
       page: req.query.page,
       count: req.query.count};
-    if (params) { // need to check the data somehow here
-      let data = await model.questions.getQuestions(params);
-      res.send(data)
-    } else {
-      res.sendStatus(400);
+
+    let questionData = await model.questions.getQuestions(params);
+    let len = questionData.length;
+    for (let i = 0; i < len; i++) {
+      let answers = await model.answers.getAnswers([questionData[i].id, 5])
     }
+
+    let results = {
+      product_id: req.req.query.product_id,
+      results: questionData
+    }
+    res.send(results);
+
   },
   post: async (req, res) => {
     let date = new Date().toJSON().slice(0,10);
