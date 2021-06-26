@@ -1,14 +1,39 @@
 const model = require('../models');
 
 module.exports = {
-  get: async (req, res) => {
+  get: (req, res) => {
+    var results = {
+      question: req.params.question_id,
+      page: req.query.page,
+      count: req.query.count
+    };
     let params = [
       req.params.question_id,
       // req.query.page,
       req.query.count
     ];
-    let data = await model.answers.getAnswers(params);
-    res.send(data);
+    let data = model.answers.fetchAnswers(params)
+    .then(data => {
+      let answerData = data;
+
+      let photoData = answerData.map( (answer) => {
+        const id = [answer.id];
+        return model.answers.fetchPhotos(id)
+        .then((data) => {
+          return data;
+        })
+      })
+
+      return Promise.all(photoData)
+      .then((data) => {
+        let len = data.length;
+        for (let i = 0; i < len; i++) {
+          answerData[i].photos = data[i];
+        }
+        results.results = answerData;
+        res.send(results);
+      })
+    })
     /*
     GET
     /qa/questions/:question_id/answers

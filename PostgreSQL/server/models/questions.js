@@ -1,12 +1,12 @@
 const db = require('../db');
 
 module.exports = {
-  getQuestions: ({product_id, page, count}) => {
-    return db.query(
-    `SELECT body, date_written, asker_name, reported, helpful
+  getQuestions: (params) => {
+    let queryStr = `SELECT id, body, date, name, reported, helpful
     FROM questions
-    WHERE product_id = ${product_id}
-    LIMIT ${count}`)
+    WHERE product_id = $1
+    LIMIT $2`
+    return db.query(queryStr, params)
     .then((data) => {
       return data.rows;
     })

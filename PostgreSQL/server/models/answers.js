@@ -1,39 +1,32 @@
 const db = require('../db');
 
 module.exports = {
-  getAnswers: (params) => {
+  fetchAnswers: (params) => {
     let queryStr = `SELECT id, body, date, name, reported, helpful
     FROM answers
     WHERE question_id = $1
     LIMIT $2`
-    let answers = db.query(queryStr, params)
+    return db.query(queryStr, params)
     .then((data) => {
-      var answersWPhotos = data.rows.map( entry => {
-        let queryStr2 = `SELECT url FROM answers_photos WHERE answer_id = $1`;
-        let photoUrls = db.query(queryStr2, [entry.id])
-        .then( data => {
-          let arrayOfPhotos = [];
-          let len = data.rows.length;
-          for (let i = 0; i < len; i++) {
-            arrayOfPhotos.push(data.rows[i].url);
-          }
-          return arrayOfPhotos;
-        })
-        .catch( err => {
-          console.log(err);
-          return 400;
-        })
-        entry.photos = photoUrls;
-        return entry;
-      })
-      console.log(answersWPhotos)
-      return answersWPhotos;
+        return data.rows;
     })
     .catch((err) => {
       console.log(err);
       return 400;
     });
-    return answers;
+  },
+  fetchPhotos: (params) => {
+    let queryStr = `SELECT url
+    FROM answers_photos
+    where answer_id = $1`
+    return db.query(queryStr, params)
+    .then((data) => {
+      let arrayOfPhotos = [];
+      data.rows.forEach(url => {
+        arrayOfPhotos.push(url.url);
+      })
+      return arrayOfPhotos;
+    })
   },
   postAnswer: (params, photos) => {
     let queryStr = `
@@ -61,6 +54,9 @@ module.exports = {
       return 400;
     });
     return data;
+  },
+  postAnswerPhoto: () => {
+    console.log(`hello world`)
   },
   updateHelpful: (params) => {
     let queryStr =
