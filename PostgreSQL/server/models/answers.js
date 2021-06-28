@@ -2,9 +2,10 @@ const db = require('../db');
 
 module.exports = {
   fetchAnswers: (params) => {
-    let queryStr = `SELECT id, body, date, name, reported, helpful
+    let queryStr = `SELECT answer_id, body, date, answerer_name, helpfulness
     FROM answers
     WHERE question_id = $1
+    AND reported = 'false'
     LIMIT $2`
     return db.query(queryStr, params)
     .then((data) => {
@@ -30,13 +31,13 @@ module.exports = {
   },
   postAnswer: (params, photos) => {
     let queryStr = `
-    INSERT INTO answers(question_id, body, date, name, email, reported, helpful)
+    INSERT INTO answers(question_id, body, date, answerer_name, email, reported, helpfulness)
     VALUES ($1, $2, $3, $4, $5, false, 0)
-    RETURNING id
-    `
-    let data = db.query(queryStr, params)
+    RETURNING answer_id
+    `;
+    return db.query(queryStr, params)
     .then((data) => {
-      let answerID = data.rows[0].id;
+      let answerID = data.rows[0].answer_id;
       let queryStr2 = `
       INSERT INTO answers_photos(answer_id, url)
       VALUES(${answerID}, $1)
@@ -44,25 +45,27 @@ module.exports = {
       let len = photos.length;
       if (len > 0) {
         for (let i = 0; i < len; i++) {
-          let done = db.query(queryStr2, [photos[i]])
+          let photoParams = [photos[i]];
+          db.query(queryStr2, photoParams)
+          .catch((err) => {
+            console.log(err);
+          })
         }
+        return 202;
+      } else {
+        return 202;
       }
-      return 202
     })
     .catch((err) => {
       console.log(err);
       return 400;
     });
-    return data;
-  },
-  postAnswerPhoto: () => {
-    console.log(`hello world`)
   },
   updateHelpful: (params) => {
     let queryStr =
     `UPDATE answers
-    SET helpful = helpful + 1
-    WHERE id = $1`;
+    SET helpfulness = helpfulness + 1
+    WHERE answer_id = $1`;
     return db.query(queryStr, params)
     .then(() => {
       return 202;
@@ -75,7 +78,7 @@ module.exports = {
     let queryStr =
     `UPDATE answers
     SET reported = true
-    WHERE id = $1`;
+    WHERE answer_id = $1`;
     return db.query(queryStr, params)
     .then(() => {
       return 202;

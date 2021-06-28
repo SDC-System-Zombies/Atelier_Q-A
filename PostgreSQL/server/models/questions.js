@@ -2,9 +2,10 @@ const db = require('../db');
 
 module.exports = {
   getQuestions: (params) => {
-    let queryStr = `SELECT id, body, date, name, reported, helpful
+    let queryStr = `SELECT question_id, question_body, question_date, asker_name, helpfulness
     FROM questions
     WHERE product_id = $1
+    AND reported = 'false'
     LIMIT $2`
     return db.query(queryStr, params)
     .then((data) => {
@@ -15,11 +16,10 @@ module.exports = {
       return 400;
     });
   },
-  postQuestion: ({ product_id, body, date ,name, email }) => {
-    return db.query(
-      `INSERT INTO questions(product_id, body, date, name, email, reported, helpful)
-      VALUES (${product_id}, ${body}, ${date}, ${name}, ${email}, false, 0)`
-    )
+  postQuestion: (params) => {
+    let queryStr = `INSERT INTO questions(product_id, question_body, question_date, asker_name, email, reported, helpfulness)
+    VALUES ($1, $2, $3, $4, $5, false, 0)`
+    return db.query(queryStr, params)
     .then(() => {
       return 202;
     })
@@ -28,12 +28,11 @@ module.exports = {
       return 400
     });
   },
-  updateHelpful: ({ question_id }) => {
-    return db.query(
-      `UPDATE questions
-      SET helpful = helpful + 1
-      WHERE id = ${question_id}`
-    )
+  updateHelpful: (params) => {
+    let queryStr =`UPDATE questions
+    SET helpfulness = helpfulness + 1
+    WHERE question_id = $1`
+    return db.query(queryStr, params)
     .then(() => {
       return 202;
     })
@@ -42,12 +41,11 @@ module.exports = {
       return 400;
     });
   },
-  reportQuestion: ({ question_id }) => {
-    return db.query(
-      `UPDATE questions
-      SET reported = true
-      WHERE id = ${question_id}`
-    )
+  reportQuestion: (params) => {
+    let queryStr = `UPDATE questions
+    SET reported = true
+    WHERE question_id = $1`
+    return db.query(queryStr, params)
     .then(() => {
       return 202;
     })
