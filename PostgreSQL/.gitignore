@@ -2,4 +2,4 @@ StressTests
 node_modules
 .ds_Store
 config.js
-SDC - PostgreSQL DB.pem
+SDC-PostgreSQLDB.pem
