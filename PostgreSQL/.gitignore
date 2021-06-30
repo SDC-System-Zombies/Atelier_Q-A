@@ -1,5 +1,7 @@
 StressTests
 node_modules
 .ds_Store
+#config and key files
 config.js
-SDC-PostgreSQLDB.pem
+SZ_SDC_PostgreSQL.pem
+db_export.pgsql

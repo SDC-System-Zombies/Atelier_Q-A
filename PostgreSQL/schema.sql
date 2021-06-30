@@ -77,13 +77,12 @@ FROM '/Users/julianzthong/Desktop/Hack_Reactor/SDC/Atelier_Import/answers_photos
 DELIMITER ','
 CSV HEADER;
 
--- Create Indexes
-
-CREATE INDEX question_prod_index ON questions(product_id);
-CREATE INDEX answer_question_index ON answers(question_id);
-CREATE INDEX photo_answer_index ON answers_photos(answer_id);
-
 -- To sync Primary Keys
 SELECT pg_catalog.setval(pg_get_serial_sequence('questions', 'question_id'), (SELECT MAX(question_id) FROM questions)+1);
 SELECT pg_catalog.setval(pg_get_serial_sequence('answers', 'answer_id'), (SELECT MAX(answer_id) FROM answers)+1);
 SELECT pg_catalog.setval(pg_get_serial_sequence('answers_photos', 'id'), (SELECT MAX(id) FROM answers_photos)+1);
+
+-- Create Indexes
+CREATE INDEX question_prod_index ON questions(product_id);
+CREATE INDEX answer_question_index ON answers(question_id);
+CREATE INDEX photo_answer_index ON answers_photos(answer_id);
