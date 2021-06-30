@@ -17,7 +17,7 @@ module.exports = {
     });
   },
   postQuestion: (params) => {
-    let queryStr = `INSERT INTO questions(product_id, question_body, question_date, asker_name, email, reported, helpfulness)
+    let queryStr = `INSERT INTO questions(product_id, question_body, question_date, asker_name, asker_email, reported, helpfulness)
     VALUES ($1, $2, $3, $4, $5, false, 0)`
     return db.query(queryStr, params)
     .then(() => {
