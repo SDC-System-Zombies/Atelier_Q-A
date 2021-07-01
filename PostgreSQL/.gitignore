@@ -4,4 +4,4 @@ node_modules
 #config and key files
 config.js
 SZ_SDC_PostgreSQL.pem
-db_export.pgsql
+db_export2.tar
