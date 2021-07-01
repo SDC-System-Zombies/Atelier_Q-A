@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 
 
 const pool = new Pool({
-  user: 'julianzthong',
+  user: 'postgres',
   host: 'localhost',
   database: 'sdc',
   password: `${auth.module.auth}`,
