@@ -1,0 +1,7 @@
+StressTests
+node_modules
+.ds_Store
+#config and key files
+config.js
+SZ_SDC_PostgreSQL.pem
+db_export2.tar

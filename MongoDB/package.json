@@ -1,0 +1,30 @@
+{
+  "name": "mongodb",
+  "version": "1.0.0",
+  "description": "MongoDB Server API for Hack-Reactor's System Design Capstone",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SDC-System-Zombies/Q-A.git"
+  },
+  "author": "Julian Thong",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/SDC-System-Zombies/Q-A/issues"
+  },
+  "homepage": "https://github.com/SDC-System-Zombies/Q-A#readme",
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "mongoose": "^5.13.0",
+    "nodemon": "^2.0.9"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "jest": "^27.0.6"
+  }
+}
